@@ -9,25 +9,21 @@ namespace TestTask.Controllers
     [ApiController]
     public class ContactController : ControllerBase
     {
-        private readonly IIncidentService _incidentService;
-        private readonly IAccountService _accountService;
         private readonly IContactService _contactService;
 
-        public ContactController(IIncidentService incidentService, IAccountService accountService, IContactService contactService)
+        public ContactController(IContactService contactService)
         {
-            _incidentService=incidentService;
-            _accountService=accountService;
             _contactService=contactService;
         }
 
-        [HttpGet]
+        [HttpGet("contacts")]
         public  IActionResult GetContacts()
         {
             var result = _contactService.GetContacts();
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("edit/contact")]
         public async Task<IActionResult> UpdateContact([FromBody]ContactModel model)
         {
             var result = await _contactService.UpdateContact(model);

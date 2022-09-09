@@ -10,11 +10,8 @@ namespace BL.Services
 {
     public interface IAccountService
     {
-        public Task<string> CreateAccount(AccountCreateModel model);
         public Task<string> CreateAccount(AccountCreateModel model, Incident incident);
-
         public Task<Account> UpdateAccount(AccountUpdateModel model);
-        public Task<Account> GetAccount(string name);
         public Task<List<Account>> GetAllAccounts();
         public Task<bool> CheckAccountExistingAsync(string name);
     }

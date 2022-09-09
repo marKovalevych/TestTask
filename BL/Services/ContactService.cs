@@ -22,20 +22,6 @@ namespace BL.Services
             _saveChangerService = saveChangerService;
         }
 
-        public async Task<Contact> CreateContact(ContactModel model)
-        {
-            var contact = new Contact
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email 
-            };
-
-            await _contactRepository.CreateContactAsync(contact);
-
-            return contact;
-        }
-
         public HashSet<Contact> GetContacts()
         {
             return _contactRepository.GetAllContacts();

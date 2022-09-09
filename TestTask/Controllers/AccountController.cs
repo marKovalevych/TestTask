@@ -5,29 +5,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TestTask.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IIncidentService _incidentService;
         private readonly IAccountService _accountService;
-        private readonly IContactService _contactService;
 
-        public AccountController(IIncidentService incidentService, IAccountService accountService, IContactService contactService)
+
+        public AccountController(IAccountService accountService)
         {
-            _incidentService=incidentService;
             _accountService=accountService;
-            _contactService=contactService;
         }
 
-        [HttpGet]
+        [HttpGet("accounts")]
         public async Task<IActionResult> GetAllAccounts()
         {
             var result = await _accountService.GetAllAccounts();
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("edit/account")]
         public async Task<IActionResult> UpdateAccount([FromBody]AccountUpdateModel model)
         {
             var result = await _accountService.UpdateAccount(model);

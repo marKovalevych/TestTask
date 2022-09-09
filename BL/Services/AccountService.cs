@@ -22,43 +22,6 @@ namespace BL.Services
             _saveChangerService = saveChangerService;
         }
 
-        public async Task<string> CreateAccount(AccountCreateModel model)
-        {
-            var contacts = new List<Contact>()
-            {
-                await _contactRepository.GetContactAsync(model.Email)
-            };
-
-            if (contacts.Count == 0)
-            {
-                var contact = new Contact()
-                {
-                    Email = model.Email,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    AccountName = model.Name
-                };
-                await _contactRepository.CreateContactAsync(contact);
-                contacts.Add(contact);
-            }
-            var account = new Account
-            {
-                Name = model.Name,
-                Contacts = contacts
-            };
-            await _accountRepository.CreateAccountAsync(account);
-            await _saveChangerService.SaveChangerAsync();
-
-            return "Ok";
-        }
-
-
-
-        public async Task<Account> GetAccount(string name)
-        {
-            return await _accountRepository.GetAccountByName(name);
-        }
-
         public async Task<List<Account>> GetAllAccounts()
         {
             return await _accountRepository.GetAllAccountsAsync();

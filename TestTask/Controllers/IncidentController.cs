@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TestTask.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api")]
     public class IncidentController : ControllerBase
     {
         private readonly IIncidentService _incidentService;
@@ -19,7 +19,7 @@ namespace TestTask.Controllers
             _contactService=contactService;
         }
 
-        [HttpGet]
+        [HttpGet("incidents")]
         public async Task<IActionResult> GetIncidents()
         {
             var result = await _incidentService.GetAllIncidents();
@@ -27,7 +27,7 @@ namespace TestTask.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("incident/create")]
         public async Task<IActionResult> AddIncidents([FromBody]IncidentModel model)
         {
             var incident = await _incidentService.CreateIncident(model);

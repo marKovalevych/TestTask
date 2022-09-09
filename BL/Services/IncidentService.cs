@@ -13,12 +13,10 @@ namespace BL.Services
     {
         private readonly IIncidentRepository _incidentRepository;
         private readonly IAccountService _accountService;
-        private readonly ISaveChangerService _saveChangerService;
         public IncidentService(IIncidentRepository incidentRepository, IAccountService accountService, ISaveChangerService saveChangerService)
         {
             _incidentRepository=incidentRepository;
             _accountService=accountService;
-            _saveChangerService = saveChangerService;
         }
 
         public async Task<Incident> CreateIncident(IncidentModel model)
