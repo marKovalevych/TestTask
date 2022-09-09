@@ -1,4 +1,6 @@
 using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using BL.BLRegistrationModule;
 using BL.Services;
 using DA;
 using DA.Repositories;
@@ -17,24 +19,14 @@ builder.Services.AddDbContext<DataContext>(
     opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")
     ));
 
-builder.Services.AddScoped<DataContext>();
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<IIncidentRepository, IncidentRepository>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IIncidentService, IncidentService>();
-builder.Services.AddScoped<IContactService, ContactService>();
-builder.Services.AddScoped<ISaveChangerService, SaveChangerService>();
-builder.Services.AddScoped<ISaveChanger, SaveChanger>();
-//var containerBuilder = new ContainerBuilder();
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new BLRegistrationModule());
+    });
 
-//containerBuilder.RegisterType<DataContext>().AsSelf().SingleInstance();
-//containerBuilder.RegisterType<ContactRepository>().As<IContactRepository>();
-//containerBuilder.RegisterType<AccountRepository>().As<IAccountRepository>();
-//containerBuilder.RegisterType<IncidentRepository>().As<IIncidentRepository>();
-//containerBuilder.RegisterType<AccountService>().As<IAccountService>();
-//containerBuilder.RegisterType<IncidentService>().As<IIncidentService>();
-//containerBuilder.RegisterType<ContactService>().As<IContactService>();
+
+
 
 var app = builder.Build();
 
