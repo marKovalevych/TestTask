@@ -34,7 +34,6 @@ namespace BL.Services
             {
                 toUpdate.FirstName = model.FirstName;
                 toUpdate.LastName = model.LastName;
-                toUpdate.Email = model.Email;
                 
 
                 _contactRepository.UpdateContact(toUpdate);
