@@ -27,6 +27,32 @@ namespace BL.Services
             return await _accountRepository.GetAllAccountsAsync();
         }
 
+        public async Task<Account> AddContactToAccount(ContactModel model)
+        {
+            var valid = await _accountRepository.GetAccountByName(model.AccountName);
+
+            if (valid is null)
+            {
+                return null;
+            }
+            var contact = new Contact
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                AccountId = valid.Id,
+                AccountName = model.AccountName,
+                Account = valid,
+                Email = model.Email
+            };
+
+            await _contactRepository.CreateContactAsync(contact);
+
+
+            await _saveChangerService.SaveChangerAsync();
+
+            return valid;
+        }
+
         public async Task<Account> UpdateAccount(AccountUpdateModel model)
         {
             var toUpdate = await _accountRepository.GetAccountByName(model.OldName);
@@ -45,8 +71,8 @@ namespace BL.Services
 
                 _accountRepository.UpdateAccount(toUpdate);
 
-                return (toUpdate);
                 await _saveChangerService.SaveChangerAsync();
+                return (toUpdate);
             }
 
             return null;
@@ -60,10 +86,8 @@ namespace BL.Services
         }
 
         public async Task<string> CreateAccount(AccountCreateModel model, Incident incident)
-        {
-            var contacts = _contactRepository.GetAllContacts();
-
-            if (!contacts.Contains(await _contactRepository.GetContactAsync(model.Email)))
+        {          
+            if (await _contactRepository.GetContactAsync(model.Email) is null)
             {
 
                 var contact = new Contact()
@@ -74,8 +98,6 @@ namespace BL.Services
                     AccountName = model.Name
                 };
 
-                contacts.Clear();
-                contacts.Add(contact);
                 var accountToCreate = new Account
                 {
                     IncidentTitle = incident.Title,
@@ -91,16 +113,7 @@ namespace BL.Services
                 return "Ok";
             }
 
-            var account = new Account
-            {
-                IncidentTitle = incident.Title,
-                Incident = incident,
-                Name = model.Name,
-                Contacts = contacts.Where(x => x.AccountName == model.Name).ToList()
-            };
-            await _accountRepository.CreateAccountAsync(account);
-            await _saveChangerService.SaveChangerAsync();
-            return "Ok";
+           return "Contact alredy exist";
         }
     }
 }

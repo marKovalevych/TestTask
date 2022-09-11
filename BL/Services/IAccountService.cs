@@ -12,6 +12,7 @@ namespace BL.Services
     {
         public Task<string> CreateAccount(AccountCreateModel model, Incident incident);
         public Task<Account> UpdateAccount(AccountUpdateModel model);
+        public Task<Account> AddContactToAccount(ContactModel model);
         public Task<List<Account>> GetAllAccounts();
         public Task<bool> CheckAccountExistingAsync(string name);
     }

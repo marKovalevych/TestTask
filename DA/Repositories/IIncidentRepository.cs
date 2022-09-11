@@ -10,6 +10,8 @@ namespace DA.Repositories
     public interface IIncidentRepository
     {
         public Task<List<Incident>> GetAllIncidentsAsync();
+        public Task<Incident> GetIncidentByNameAsync(string name);
+        public Task UpdateIncidentAsync(Incident incident);
         public Task CreateIncidentAsync(Incident incident);
     }
 }

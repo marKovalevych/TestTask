@@ -12,6 +12,7 @@ namespace BL.Services
     public interface IIncidentService
     {
         public Task<Incident> CreateIncident(IncidentModel model); 
+        public Task<Incident> UpdateIncident(AccountCreateModel model, string incidentTitle);
         public Task<List<Incident>> GetAllIncidents();
     }
 }

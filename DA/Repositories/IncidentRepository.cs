@@ -28,5 +28,16 @@ namespace DA.Repositories
         {
             return await _context.Incidents.ToListAsync();
         }
+
+        public async Task<Incident> GetIncidentByNameAsync(string name)
+        {
+            return await _context.Incidents.FirstOrDefaultAsync(x => x.Title == name);
+        }
+
+        public async Task UpdateIncidentAsync(Incident incident)
+        {
+            _context.Incidents.Update(incident);
+            await _context.SaveChangesAsync();
+        }
     }
 }

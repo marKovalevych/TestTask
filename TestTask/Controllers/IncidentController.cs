@@ -9,14 +9,10 @@ namespace TestTask.Controllers
     public class IncidentController : ControllerBase
     {
         private readonly IIncidentService _incidentService;
-        private readonly IAccountService _accountService;
-        private readonly IContactService _contactService;
-
-        public IncidentController(IIncidentService incidentService, IAccountService accountService, IContactService contactService)
+        
+        public IncidentController(IIncidentService incidentService)
         {
             _incidentService=incidentService;
-            _accountService=accountService;
-            _contactService=contactService;
         }
 
         [HttpGet("incidents")]
@@ -34,5 +30,14 @@ namespace TestTask.Controllers
 
             return Ok(incident);
         }
+
+        //[HttpPut("edit/incident/add/account")]
+        //public async Task<IActionResult> UpdateIncidentByAddAccount([FromBody]AccountCreateModel model, [FromQuery]string title)
+        //{
+        //    var result = await _incidentService.UpdateIncident(model, title);
+        //    return result is null ?
+        //        BadRequest($"{title} does not exist or wrong account name") :
+        //        Ok(result);
+        //}
     }
 }

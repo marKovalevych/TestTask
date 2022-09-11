@@ -41,10 +41,8 @@ namespace BL.Services
             var accountExist = await _accountService.CheckAccountExistingAsync(model.AccountName);
 
             if (accountExist)
-            {
-                await _incidentRepository.CreateIncidentAsync(incident);
-
-                return incident;
+            { 
+                return null;
             }
             var account = new AccountCreateModel
             {
@@ -68,6 +66,33 @@ namespace BL.Services
         private Guid GenerateTitle()
         {
             return Guid.NewGuid();
+        }
+
+        public async Task<Incident> UpdateIncident(AccountCreateModel model, string incidentTitle)
+        {
+            var incident = await _incidentRepository.GetIncidentByNameAsync(incidentTitle);
+            if (incident is null)
+            {
+                return null;
+            }
+
+            var accountExist = await _accountService.CheckAccountExistingAsync(model.Name);
+
+            if (accountExist)
+            {
+                return null;
+            }
+            var account = new AccountCreateModel
+            {
+                Name = model.Name,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email
+            };
+
+            await _accountService.CreateAccount(account, incident);
+
+            return incident;
         }
     }
 }
